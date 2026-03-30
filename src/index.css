@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Theme Tokens ─── */
+:root {
+  --color-bg: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-2: #F1F5F9;
+  --color-primary: #1E3A5F;
+  --color-primary-hover: #162D4A;
+  --color-primary-fg: #FFFFFF;
+  --color-accent: #F59E0B;
+  --color-accent-hover: #D97706;
+  --color-text: #0F172A;
+  --color-text-muted: #64748B;
+  --color-border: #E2E8F0;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-info: #3B82F6;
+  --sidebar-width: 260px;
+}
+
+[data-theme="dark"] {
+  --color-bg: #0F172A;
+  --color-surface: #1E293B;
+  --color-surface-2: #263548;
+  --color-primary: #3B82F6;
+  --color-primary-hover: #2563EB;
+  --color-primary-fg: #FFFFFF;
+  --color-accent: #FBBF24;
+  --color-accent-hover: #F59E0B;
+  --color-text: #F1F5F9;
+  --color-text-muted: #94A3B8;
+  --color-border: #334155;
+  --color-success: #34D399;
+  --color-warning: #FCD34D;
+  --color-danger: #F87171;
+  --color-info: #60A5FA;
+}
+
+/* ─── Base ─── */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+
+/* ─── Focus Ring ─── */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Utility ─── */
+.text-balance { text-wrap: balance; }
+
+@layer components {
+  .card {
+    @apply bg-surface rounded-lg border border-border p-4 shadow-sm;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium;
+  }
+  .skeleton {
+    @apply animate-pulse bg-surface-2 rounded;
+  }
+}
+
+/* ─── Spotlight overlay ─── */
+.spotlight-overlay {
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Print ─── */
+@media print {
+  .no-print { display: none !important; }
+}
