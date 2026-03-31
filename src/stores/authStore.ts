@@ -30,7 +30,18 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'acervo-auth',
+      // Solo persiste profile — loading NUNCA se persiste para evitar
+      // que una rehidratación del store deje loading:true indefinidamente
       partialize: (state) => ({ profile: state.profile }),
+      onRehydrateStorage: () => (state) => {
+        // Después de rehidratar desde localStorage, loading sigue true.
+        // No lo tocamos aquí: useAuthInit lo pondrá en false al verificar sesión.
+        // Esto evita que el spinner aparezca en navegaciones normales.
+        if (state) {
+          // Solo resetear loading si NO hay sesión activa que verificar
+          // (lo maneja useAuthInit con getSession fallback)
+        }
+      },
     }
   )
 )

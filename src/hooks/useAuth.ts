@@ -13,33 +13,47 @@ async function fetchProfile(userId: string): Promise<Profile | null> {
 }
 
 export function useAuthInit() {
-  const { setUser, setSession, setProfile, setLoading, clear } = useAuthStore()
+  const store = useAuthStore
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        const profile = await fetchProfile(session.user.id)
-        setProfile(profile)
-      }
-      setLoading(false)
-    })
+    const { setUser, setSession, setLoading, clear } = store.getState()
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        const profile = await fetchProfile(session.user.id)
-        setProfile(profile)
-      } else if (event === 'SIGNED_OUT') {
-        clear()
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_OUT') {
+          clear()
+          return
+        }
+
+        const { setUser: su, setSession: ss, setProfile: sp, setLoading: sl } = store.getState()
+        ss(session)
+        su(session?.user ?? null)
+
+        if (session?.user) {
+          const profile = await fetchProfile(session.user.id)
+          sp(profile)
+        }
+
+        // Solo marcar loading:false en la verificación inicial
+        if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') {
+          sl(false)
+        }
       }
-      setLoading(false)
+    )
+
+    // Fallback: si onAuthStateChange no dispara INITIAL_SESSION (edge case)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      const { loading } = store.getState()
+      if (loading) {
+        setUser(session?.user ?? null)
+        setSession(session)
+        setLoading(false)
+      }
     })
 
     return () => subscription.unsubscribe()
-  }, [setUser, setSession, setProfile, setLoading, clear])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 }
 
 export function useSignIn() {

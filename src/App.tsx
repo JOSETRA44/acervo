@@ -24,7 +24,6 @@ const queryClient = new QueryClient({
 })
 
 function AppRoutes() {
-  useAuthInit()
   const { user, loading } = useAuthStore()
 
   if (loading) {
@@ -56,6 +55,10 @@ function AppRoutes() {
 }
 
 export default function App() {
+  // useAuthInit vive en el nivel raíz — se ejecuta UNA sola vez
+  // y nunca se desmonta al navegar entre rutas
+  useAuthInit()
+
   return (
     <QueryClientProvider client={queryClient}>
       <HashRouter>
