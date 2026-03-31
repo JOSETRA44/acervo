@@ -11,7 +11,6 @@ import { ThreadLinker } from '@/components/documents/ThreadLinker'
 import { useExternalDocuments, getDocumentUrl } from '@/hooks/useDocuments'
 import { useAuthStore } from '@/stores/authStore'
 import { formatDate } from '@/lib/utils'
-import { motion } from 'framer-motion'
 import { Inbox } from 'lucide-react'
 import type { ExternalDocument, Urgency } from '@/types'
 
@@ -102,12 +101,9 @@ export function ExternalDocsPage() {
             <p className="text-sm">Sin documentos recibidos</p>
           </div>
         ) : (
-          filtered.map((doc, i) => (
-            <motion.div
+          filtered.map((doc) => (
+            <div
               key={doc.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: i * 0.02 }}
               className="grid grid-cols-[100px_1fr_160px_120px_80px_80px] gap-4 px-4 py-3 border-b border-border hover:bg-surface-2 transition-colors items-center"
             >
               <span className="text-xs font-mono text-text">
@@ -149,7 +145,7 @@ export function ExternalDocsPage() {
                   </Button>
                 )}
               </div>
-            </motion.div>
+            </div>
           ))
         )}
       </div>

@@ -35,7 +35,7 @@ export function InternalDocumentWizard({ open, onClose }: Props) {
 
   const profile = useAuthStore((s) => s.profile)
   const { data: docTypes } = useDocumentTypes()
-  const { data: projects } = useProjects()
+  const { data: projects } = useProjects(true, { enabled: open })
   const createDoc = useCreateInternalDocument()
 
   const {
@@ -53,7 +53,7 @@ export function InternalDocumentWizard({ open, onClose }: Props) {
   const docTypeId = watch('document_type_id')
   const projectId = watch('project_id')
 
-  const { data: nextSeq } = useNextSequence(docTypeId ?? '', currentYear)
+  const { data: nextSeq } = useNextSequence(docTypeId ?? '', currentYear, { enabled: open })
   const selectedProject = projects?.find((p) => p.id === projectId)
   const selectedType = docTypes?.find((t) => t.id === docTypeId)
 

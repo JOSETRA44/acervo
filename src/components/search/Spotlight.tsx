@@ -17,9 +17,9 @@ export function Spotlight({ open, onClose }: SpotlightProps) {
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
 
-  const { data: projects } = useProjects()
-  const { data: internalDocs } = useInternalDocuments()
-  const { data: externalDocs } = useExternalDocuments()
+  const { data: projects } = useProjects(true, { enabled: open })
+  const { data: internalDocs } = useInternalDocuments(undefined, { enabled: open })
+  const { data: externalDocs } = useExternalDocuments(undefined, { enabled: open })
 
   useEffect(() => {
     if (!open) setQuery('')

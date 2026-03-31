@@ -3,7 +3,6 @@ import { useDocumentThreads } from '@/hooks/useDocuments'
 import { Badge } from '@/components/ui/Badge'
 import { SkeletonCard } from '@/components/ui/Skeleton'
 import { formatDate } from '@/lib/utils'
-import { motion } from 'framer-motion'
 
 export function ThreadsPage() {
   const { data: threads, isLoading } = useDocumentThreads()
@@ -29,12 +28,9 @@ export function ThreadsPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {threads?.map((thread, i) => (
-            <motion.div
+          {threads?.map((thread) => (
+            <div
               key={thread.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
               className="card"
             >
               {/* Thread header */}
@@ -94,7 +90,7 @@ export function ThreadsPage() {
               {thread.notes && (
                 <p className="mt-3 text-xs text-text-muted italic border-t border-border pt-3">{thread.notes}</p>
               )}
-            </motion.div>
+            </div>
           ))}
         </div>
       )}

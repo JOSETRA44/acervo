@@ -34,9 +34,9 @@ export function ExternalDocumentWizard({ open, onClose }: Props) {
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
   const profile = useAuthStore((s) => s.profile)
-  const { data: projects } = useProjects()
+  const { data: projects } = useProjects(true, { enabled: open })
   const currentYear = new Date().getFullYear()
-  const { data: nextReception } = useNextReceptionNumber(currentYear)
+  const { data: nextReception } = useNextReceptionNumber(currentYear, { enabled: open })
   const createDoc = useCreateExternalDocument()
 
   const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormValues>({

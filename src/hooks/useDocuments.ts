@@ -16,7 +16,7 @@ export function useDocumentTypes() {
 }
 
 // ─── Internal Documents ───
-export function useInternalDocuments(filters?: { projectId?: string; year?: number; typeId?: string }) {
+export function useInternalDocuments(filters?: { projectId?: string; year?: number; typeId?: string }, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['internal_docs', filters],
     queryFn: async () => {
@@ -26,6 +26,7 @@ export function useInternalDocuments(filters?: { projectId?: string; year?: numb
         .eq('status', 'active')
         .order('year', { ascending: false })
         .order('sequence_number', { ascending: false })
+        .limit(200)
       if (filters?.projectId) q = q.eq('project_id', filters.projectId)
       if (filters?.year) q = q.eq('year', filters.year)
       if (filters?.typeId) q = q.eq('document_type_id', filters.typeId)
@@ -33,10 +34,11 @@ export function useInternalDocuments(filters?: { projectId?: string; year?: numb
       if (error) throw error
       return data as InternalDocument[]
     },
+    enabled: options?.enabled ?? true,
   })
 }
 
-export function useNextSequence(docTypeId: string, year: number) {
+export function useNextSequence(docTypeId: string, year: number, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['next_seq', docTypeId, year],
     queryFn: async () => {
@@ -47,7 +49,7 @@ export function useNextSequence(docTypeId: string, year: number) {
       if (error) throw error
       return data as number
     },
-    enabled: !!docTypeId,
+    enabled: !!docTypeId && (options?.enabled ?? true),
   })
 }
 
@@ -84,7 +86,7 @@ export function useSoftDeleteInternalDocument() {
 }
 
 // ─── External Documents ───
-export function useExternalDocuments(filters?: { projectId?: string; year?: number }) {
+export function useExternalDocuments(filters?: { projectId?: string; year?: number }, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['external_docs', filters],
     queryFn: async () => {
@@ -94,16 +96,18 @@ export function useExternalDocuments(filters?: { projectId?: string; year?: numb
         .eq('status', 'active')
         .order('year', { ascending: false })
         .order('reception_number', { ascending: false })
+        .limit(200)
       if (filters?.projectId) q = q.eq('project_id', filters.projectId)
       if (filters?.year) q = q.eq('year', filters.year)
       const { data, error } = await q
       if (error) throw error
       return data as ExternalDocument[]
     },
+    enabled: options?.enabled ?? true,
   })
 }
 
-export function useNextReceptionNumber(year: number) {
+export function useNextReceptionNumber(year: number, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ['next_reception', year],
     queryFn: async () => {
@@ -111,6 +115,7 @@ export function useNextReceptionNumber(year: number) {
       if (error) throw error
       return data as number
     },
+    enabled: options?.enabled ?? true,
   })
 }
 
@@ -139,6 +144,7 @@ export function useDocumentThreads(externalDocId?: string) {
         .from('document_threads')
         .select('*, external_document:external_documents(*), internal_document:internal_documents(*, document_type:document_types(*)), linker:profiles(id,full_name)')
         .order('created_at', { ascending: false })
+        .limit(200)
       if (externalDocId) q = q.eq('external_document_id', externalDocId)
       const { data, error } = await q
       if (error) throw error

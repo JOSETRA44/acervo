@@ -4,7 +4,7 @@ import type { Project, ProjectDocumentSummary } from '@/types'
 
 const QUERY_KEY = 'projects'
 
-export function useProjects(onlyActive = true) {
+export function useProjects(onlyActive = true, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: [QUERY_KEY, onlyActive],
     queryFn: async () => {
@@ -12,11 +12,13 @@ export function useProjects(onlyActive = true) {
         .from('projects')
         .select('*, responsible:profiles(id,full_name,role)')
         .order('created_at', { ascending: false })
+        .limit(200)
       if (onlyActive) q = q.eq('is_active', true)
       const { data, error } = await q
       if (error) throw error
       return data as Project[]
     },
+    enabled: options?.enabled ?? true,
   })
 }
 
