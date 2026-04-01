@@ -46,6 +46,7 @@ export function useProjectSummaries() {
         .from('v_project_document_summary')
         .select('*')
         .order('investment_cost', { ascending: false })
+        .limit(200)
       if (error) throw error
       return data as ProjectDocumentSummary[]
     },
@@ -60,7 +61,10 @@ export function useCreateProject() {
       if (error) throw error
       return data as Project
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: [QUERY_KEY] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [QUERY_KEY] })
+      qc.invalidateQueries({ queryKey: ['project_summaries'] })
+    },
   })
 }
 
@@ -72,6 +76,9 @@ export function useUpdateProject() {
       if (error) throw error
       return data as Project
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: [QUERY_KEY] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [QUERY_KEY] })
+      qc.invalidateQueries({ queryKey: ['project_summaries'] })
+    },
   })
 }
