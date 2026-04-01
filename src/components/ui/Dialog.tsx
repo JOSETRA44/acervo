@@ -33,45 +33,43 @@ export function Dialog({ open, onClose, title, description, children, size = 'md
                 className="fixed inset-0 z-50 spotlight-overlay"
               />
             </RadixDialog.Overlay>
-            <RadixDialog.Content asChild>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96, y: 8 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: 8 }}
-                transition={{ duration: 0.18 }}
-                className={cn(
-                  'fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4',
-                  'focus:outline-none'
-                )}
-              >
-              <div className={cn(
-                'relative w-full bg-surface rounded-xl shadow-lg border border-border p-6 my-auto',
-                sizeMap[size]
-              )}>
-                {(title || description) && (
-                  <div className="mb-4">
-                    {title && (
-                      <RadixDialog.Title className="text-lg font-semibold text-text">
-                        {title}
-                      </RadixDialog.Title>
-                    )}
-                    {description && (
-                      <RadixDialog.Description className="text-sm text-text-muted mt-1">
-                        {description}
-                      </RadixDialog.Description>
-                    )}
-                  </div>
-                )}
-                {children}
-                <RadixDialog.Close
-                  className="absolute top-4 right-4 text-text-muted hover:text-text transition-colors rounded focus-visible:ring-2 focus-visible:ring-primary p-1"
-                  aria-label="Cerrar"
+            <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4">
+              <RadixDialog.Content asChild>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.96, y: 8 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96, y: 8 }}
+                  transition={{ duration: 0.18 }}
+                  className={cn(
+                    'relative w-full bg-surface rounded-xl shadow-lg border border-border p-6 my-auto',
+                    'focus:outline-none',
+                    sizeMap[size]
+                  )}
                 >
-                  <X className="h-4 w-4" />
-                </RadixDialog.Close>
-              </div>
-              </motion.div>
-            </RadixDialog.Content>
+                  {(title || description) && (
+                    <div className="mb-4">
+                      {title && (
+                        <RadixDialog.Title className="text-lg font-semibold text-text">
+                          {title}
+                        </RadixDialog.Title>
+                      )}
+                      {description && (
+                        <RadixDialog.Description className="text-sm text-text-muted mt-1">
+                          {description}
+                        </RadixDialog.Description>
+                      )}
+                    </div>
+                  )}
+                  {children}
+                  <RadixDialog.Close
+                    className="absolute top-4 right-4 text-text-muted hover:text-text transition-colors rounded focus-visible:ring-2 focus-visible:ring-primary p-1"
+                    aria-label="Cerrar"
+                  >
+                    <X className="h-4 w-4" />
+                  </RadixDialog.Close>
+                </motion.div>
+              </RadixDialog.Content>
+            </div>
           </RadixDialog.Portal>
         )}
       </AnimatePresence>
