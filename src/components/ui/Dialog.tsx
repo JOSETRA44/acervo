@@ -40,12 +40,14 @@ export function Dialog({ open, onClose, title, description, children, size = 'md
                 exit={{ opacity: 0, scale: 0.96, y: 8 }}
                 transition={{ duration: 0.18 }}
                 className={cn(
-                  'fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2',
-                  'w-full bg-surface rounded-xl shadow-lg border border-border p-6',
-                  'focus:outline-none',
-                  sizeMap[size]
+                  'fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4',
+                  'focus:outline-none'
                 )}
               >
+              <div className={cn(
+                'relative w-full bg-surface rounded-xl shadow-lg border border-border p-6 my-auto',
+                sizeMap[size]
+              )}>
                 {(title || description) && (
                   <div className="mb-4">
                     {title && (
@@ -67,6 +69,7 @@ export function Dialog({ open, onClose, title, description, children, size = 'md
                 >
                   <X className="h-4 w-4" />
                 </RadixDialog.Close>
+              </div>
               </motion.div>
             </RadixDialog.Content>
           </RadixDialog.Portal>
