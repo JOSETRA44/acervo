@@ -24,11 +24,11 @@ export function ExternalDocsPage() {
   const [wizardOpen, setWizardOpen] = useState(false)
   const [threadDoc, setThreadDoc] = useState<ExternalDocument | null>(null)
   const [search, setSearch] = useState('')
-  const [filterYear, setFilterYear] = useState('')
+  const [filterYear, setFilterYear] = useState('__all__')
 
   const profile = useAuthStore((s) => s.profile)
   const { data: docs, isLoading } = useExternalDocuments({
-    year: filterYear ? parseInt(filterYear) : undefined,
+    year: filterYear !== '__all__' ? parseInt(filterYear) : undefined,
   })
   const canCreate = profile?.role !== 'viewer'
 
@@ -71,7 +71,7 @@ export function ExternalDocsPage() {
         />
         <div className="w-32">
           <Select
-            options={[{ value: '', label: 'Todos' }, ...years.map((y) => ({ value: String(y), label: String(y) }))]}
+            options={[{ value: '__all__', label: 'Todos' }, ...years.map((y) => ({ value: String(y), label: String(y) }))]}
             value={filterYear}
             onValueChange={setFilterYear}
           />

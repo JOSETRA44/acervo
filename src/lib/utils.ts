@@ -8,9 +8,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatDate(date: string | Date, pattern = 'dd/MM/yyyy') {
-  const d = typeof date === 'string' ? parseISO(date) : date
-  return format(d, pattern, { locale: es })
+export function formatDate(date: string | Date | null | undefined, pattern = 'dd/MM/yyyy') {
+  if (!date) return '—'
+  try {
+    const d = typeof date === 'string' ? parseISO(date) : date
+    return format(d, pattern, { locale: es })
+  } catch {
+    return '—'
+  }
 }
 
 export function formatCurrency(value: number) {

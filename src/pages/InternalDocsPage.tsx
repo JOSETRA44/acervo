@@ -14,13 +14,13 @@ import { FileText } from 'lucide-react'
 export function InternalDocsPage() {
   const [wizardOpen, setWizardOpen] = useState(false)
   const [search, setSearch] = useState('')
-  const [filterTypeId, setFilterTypeId] = useState('')
-  const [filterYear, setFilterYear] = useState('')
+  const [filterTypeId, setFilterTypeId] = useState('__all__')
+  const [filterYear, setFilterYear] = useState('__all__')
 
   const profile = useAuthStore((s) => s.profile)
   const { data: docs, isLoading } = useInternalDocuments({
-    typeId: filterTypeId || undefined,
-    year: filterYear ? parseInt(filterYear) : undefined,
+    typeId: filterTypeId !== '__all__' ? filterTypeId : undefined,
+    year: filterYear !== '__all__' ? parseInt(filterYear) : undefined,
   })
   const { data: docTypes } = useDocumentTypes()
   const canCreate = profile?.role !== 'viewer'
@@ -65,14 +65,14 @@ export function InternalDocsPage() {
         />
         <div className="w-44">
           <Select
-            options={[{ value: '', label: 'Todos los tipos' }, ...internalTypes.map((t) => ({ value: t.id, label: t.name, color: t.color }))]}
+            options={[{ value: '__all__', label: 'Todos los tipos' }, ...internalTypes.map((t) => ({ value: t.id, label: t.name, color: t.color }))]}
             value={filterTypeId}
             onValueChange={setFilterTypeId}
           />
         </div>
         <div className="w-32">
           <Select
-            options={[{ value: '', label: 'Todos los años' }, ...years.map((y) => ({ value: String(y), label: String(y) }))]}
+            options={[{ value: '__all__', label: 'Todos los años' }, ...years.map((y) => ({ value: String(y), label: String(y) }))]}
             value={filterYear}
             onValueChange={setFilterYear}
           />

@@ -135,12 +135,12 @@ export function InternalDocumentWizard({ open, onClose }: Props) {
           <Select
             label="Proyecto (CUI)"
             options={[
-              { value: '', label: 'Sin proyecto' },
+              { value: '__none__', label: 'Sin proyecto' },
               ...(projects?.map((p) => ({ value: p.id, label: `${p.cui} — ${p.name}` })) ?? []),
             ]}
             onValueChange={(v) => {
               const el = document.querySelector(`[name="project_id"]`) as HTMLInputElement | null
-              if (el) el.value = v
+              if (el) el.value = v === '__none__' ? '' : v
             }}
           />
           <input type="hidden" {...register('project_id')} />
