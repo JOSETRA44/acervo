@@ -22,7 +22,7 @@ export function useInternalDocuments(filters?: { projectId?: string; year?: numb
     queryFn: async () => {
       let q = supabase
         .from('internal_documents')
-        .select('*, document_type:document_types(*), project:projects(id,cui,name), issuer:profiles(id,full_name)')
+        .select('*, document_type:document_types(*), project:projects(id,cui,name), issuer:profiles!issuer_id(id,full_name)')
         .eq('status', 'active')
         .order('year', { ascending: false })
         .order('sequence_number', { ascending: false })
@@ -94,7 +94,7 @@ export function useExternalDocuments(filters?: { projectId?: string; year?: numb
     queryFn: async () => {
       let q = supabase
         .from('external_documents')
-        .select('*, project:projects(id,cui,name), receiver:profiles(id,full_name)')
+        .select('*, project:projects(id,cui,name), receiver:profiles!received_by(id,full_name)')
         .eq('status', 'active')
         .order('year', { ascending: false })
         .order('reception_number', { ascending: false })
