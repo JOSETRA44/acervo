@@ -7,7 +7,6 @@ import { SkeletonCard } from '@/components/ui/Skeleton'
 import { useProject } from '@/hooks/useProjects'
 import { useInternalDocuments, useExternalDocuments } from '@/hooks/useDocuments'
 import { formatDate, formatCurrency, STAGE_LABELS, STAGE_COLORS } from '@/lib/utils'
-import { motion } from 'framer-motion'
 
 export function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -68,12 +67,9 @@ export function ProjectDetailPage() {
             {internalDocs?.length === 0 ? (
               <p className="text-sm text-text-muted text-center py-4">Sin documentos internos</p>
             ) : (
-              internalDocs?.map((doc, i) => (
-                <motion.div
+              internalDocs?.map((doc) => (
+                <div
                   key={doc.id}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.04 }}
                   className="flex items-start gap-3 p-2.5 rounded-lg border border-border hover:bg-surface-2 transition-colors"
                 >
                   <Badge label={doc.document_type?.code ?? '—'} color={doc.document_type?.color} />
@@ -84,7 +80,7 @@ export function ProjectDetailPage() {
                   <span className="text-xs font-mono text-text-muted">
                     {String(doc.sequence_number).padStart(3,'0')}
                   </span>
-                </motion.div>
+                </div>
               ))
             )}
           </div>
@@ -101,12 +97,9 @@ export function ProjectDetailPage() {
             {externalDocs?.length === 0 ? (
               <p className="text-sm text-text-muted text-center py-4">Sin documentos externos</p>
             ) : (
-              externalDocs?.map((doc, i) => (
-                <motion.div
+              externalDocs?.map((doc) => (
+                <div
                   key={doc.id}
-                  initial={{ opacity: 0, x: 8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.04 }}
                   className="flex items-start gap-3 p-2.5 rounded-lg border border-border hover:bg-surface-2 transition-colors"
                 >
                   <Badge label="REC" color="#EF4444" />
@@ -118,7 +111,7 @@ export function ProjectDetailPage() {
                   {doc.requires_response && (
                     <span className="text-xs text-warning font-medium">Resp.</span>
                   )}
-                </motion.div>
+                </div>
               ))
             )}
           </div>

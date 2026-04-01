@@ -19,12 +19,14 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * 5,
       retry: 1,
+      refetchOnWindowFocus: false,
     },
   },
 })
 
 function AppRoutes() {
-  const { user, loading } = useAuthStore()
+  const user = useAuthStore((s) => s.user)
+  const loading = useAuthStore((s) => s.loading)
 
   if (loading) {
     return (

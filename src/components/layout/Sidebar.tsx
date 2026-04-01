@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard, FolderOpen, FileText, Inbox,
   GitBranch, BarChart3, Settings, ChevronLeft, Building2,
@@ -31,29 +30,23 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const profile = useAuthStore((s) => s.profile)
 
   return (
-    <motion.aside
-      animate={{ width: collapsed ? 64 : 260 }}
-      transition={{ duration: 0.2, ease: 'easeInOut' }}
-      className="relative flex flex-col h-full bg-surface border-r border-border overflow-hidden shrink-0 z-20"
+    <aside
+      className={cn(
+        'relative flex flex-col h-full bg-surface border-r border-border overflow-hidden shrink-0 z-20 transition-[width] duration-200 ease-in-out',
+        collapsed ? 'w-16' : 'w-[260px]'
+      )}
     >
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 h-16 border-b border-border shrink-0">
         <div className="flex items-center justify-center h-8 w-8 rounded bg-primary text-white shrink-0">
           <Building2 className="h-4 w-4" />
         </div>
-        <AnimatePresence>
-          {!collapsed && (
-            <motion.div
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: 'auto' }}
-              exit={{ opacity: 0, width: 0 }}
-              className="overflow-hidden whitespace-nowrap"
-            >
-              <p className="text-sm font-semibold text-text leading-tight">Acervo</p>
-              <p className="text-xs text-text-muted leading-tight">Challhuahuacho</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {!collapsed && (
+          <div className="overflow-hidden whitespace-nowrap">
+            <p className="text-sm font-semibold text-text leading-tight">Acervo</p>
+            <p className="text-xs text-text-muted leading-tight">Challhuahuacho</p>
+          </div>
+        )}
       </div>
 
       {/* Nav */}
@@ -74,6 +67,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
       {/* Collapse toggle */}
       <button
+        type="button"
         onClick={onToggle}
         className={cn(
           'absolute -right-3 top-16 h-6 w-6 rounded-full bg-surface border border-border',
@@ -84,7 +78,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       >
         <ChevronLeft className={cn('h-3.5 w-3.5 transition-transform', collapsed && 'rotate-180')} />
       </button>
-    </motion.aside>
+    </aside>
   )
 }
 
@@ -105,18 +99,9 @@ function SidebarItem({
       }
     >
       <Icon className="h-4 w-4 shrink-0" />
-      <AnimatePresence>
-        {!collapsed && (
-          <motion.span
-            initial={{ opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: 'auto' }}
-            exit={{ opacity: 0, width: 0 }}
-            className="overflow-hidden whitespace-nowrap"
-          >
-            {label}
-          </motion.span>
-        )}
-      </AnimatePresence>
+      {!collapsed && (
+        <span className="overflow-hidden whitespace-nowrap">{label}</span>
+      )}
     </NavLink>
   )
 }

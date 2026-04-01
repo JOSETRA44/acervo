@@ -50,6 +50,8 @@ export function useNextSequence(docTypeId: string, year: number, options?: { ena
       return data as number
     },
     enabled: !!docTypeId && (options?.enabled ?? true),
+    staleTime: 0,
+    gcTime: 0,
   })
 }
 
@@ -116,6 +118,8 @@ export function useNextReceptionNumber(year: number, options?: { enabled?: boole
       return data as number
     },
     enabled: options?.enabled ?? true,
+    staleTime: 0,
+    gcTime: 0,
   })
 }
 

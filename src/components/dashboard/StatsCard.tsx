@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 interface StatsCardProps {
@@ -19,14 +18,9 @@ const colorMap = {
   info: 'text-info bg-info/10',
 }
 
-export function StatsCard({ title, value, subtitle, icon, trend, color = 'primary', index = 0 }: StatsCardProps) {
+export function StatsCard({ title, value, subtitle, icon, trend, color = 'primary' }: StatsCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.06 }}
-      className="card hover:shadow-md transition-shadow"
-    >
+    <div className="card hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-3">
         <div className={cn('p-2.5 rounded-lg', colorMap[color])}>
           {icon}
@@ -40,6 +34,6 @@ export function StatsCard({ title, value, subtitle, icon, trend, color = 'primar
       <p className="text-2xl font-bold text-text">{value}</p>
       <p className="text-sm font-medium text-text mt-0.5">{title}</p>
       {subtitle && <p className="text-xs text-text-muted mt-1">{subtitle}</p>}
-    </motion.div>
+    </div>
   )
 }

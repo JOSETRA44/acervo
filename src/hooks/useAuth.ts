@@ -29,14 +29,19 @@ export function useAuthInit() {
         ss(session)
         su(session?.user ?? null)
 
-        if (session?.user) {
-          const profile = await fetchProfile(session.user.id)
-          sp(profile)
-        }
-
-        // Solo marcar loading:false en la verificación inicial
+        // Resolve loading immediately so the spinner disappears while profile loads in bg
         if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') {
           sl(false)
+        }
+
+        // Skip profile re-fetch on token refresh — profile hasn't changed
+        if (session?.user && event !== 'TOKEN_REFRESHED') {
+          try {
+            const profile = await fetchProfile(session.user.id)
+            sp(profile)
+          } catch {
+            sp(null)
+          }
         }
       }
     )
@@ -49,6 +54,9 @@ export function useAuthInit() {
         setSession(session)
         setLoading(false)
       }
+    }).catch(() => {
+      const { loading } = store.getState()
+      if (loading) setLoading(false)
     })
 
     return () => subscription.unsubscribe()
